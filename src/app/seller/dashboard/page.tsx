@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSellerAuth } from "@/components/seller-auth-provider";
 import { useSellerProducts } from "@/hooks/use-seller-products";
 import { AddProductModal } from "@/components/add-product-modal";
+import { CompetitorAnalysisModal } from "@/components/competitor-analysis-modal";
 import type { Product } from "@/types";
 
 const mockRecentOrders = [
@@ -71,6 +72,7 @@ export default function SellerDashboardPage() {
   const { seller, logout } = useSellerAuth();
   const router = useRouter();
   const [showAddProduct, setShowAddProduct] = useState(false);
+  const [showCompetitor, setShowCompetitor] = useState(false);
   const { products: myProducts, addProduct, removeProduct } = useSellerProducts(
     seller?.email ?? ""
   );
@@ -217,6 +219,14 @@ export default function SellerDashboardPage() {
             addProduct(draft);
             setShowAddProduct(false);
           }}
+          onOpenCompetitor={() => setShowCompetitor(true)}
+        />
+      )}
+
+      {showCompetitor && (
+        <CompetitorAnalysisModal
+          onClose={() => setShowCompetitor(false)}
+          sellerEmail={seller.email}
         />
       )}
     </div>

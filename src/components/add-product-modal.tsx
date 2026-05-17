@@ -7,6 +7,7 @@ import type { ProductDraft } from "@/hooks/use-seller-products";
 interface AddProductModalProps {
   onClose: () => void;
   onAdd: (draft: ProductDraft) => void;
+  onOpenCompetitor: () => void;
 }
 
 const EMPTY: ProductDraft = {
@@ -34,7 +35,7 @@ const labelClass =
 const sectionClass =
   "text-[12px] font-medium uppercase tracking-[0.8px] text-charcoal mb-3 pb-2 border-b border-black/10";
 
-export function AddProductModal({ onClose, onAdd }: AddProductModalProps) {
+export function AddProductModal({ onClose, onAdd, onOpenCompetitor }: AddProductModalProps) {
   const [form, setForm] = useState<ProductDraft>(EMPTY);
   const [error, setError] = useState("");
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -152,6 +153,23 @@ export function AddProductModal({ onClose, onAdd }: AddProductModalProps) {
                 />
               </div>
             </div>
+          </div>
+
+          {/* Competitor pricing CTA */}
+          <div className="flex items-center justify-between bg-charcoal/5 rounded-lg px-4 py-3">
+            <div>
+              <p className="text-[12px] font-medium text-charcoal">Nie wiesz, jaka cena jest najlepsza?</p>
+              <p className="text-[11px] text-warm-gray">
+                Sprawdź, jak wypadasz na tle konkurencji w tej kategorii.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onOpenCompetitor}
+              className="btn-cta-outline text-[11px] whitespace-nowrap ml-4"
+            >
+              SPRAWDŹ CENY →
+            </button>
           </div>
 
           {/* Category */}
