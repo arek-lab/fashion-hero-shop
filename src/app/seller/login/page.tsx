@@ -1,0 +1,81 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useSellerAuth } from "@/components/seller-auth-provider";
+
+export default function SellerLoginPage() {
+  const { login } = useSellerAuth();
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    await login(email, password);
+    router.push("/seller/dashboard");
+  }
+
+  return (
+    <div className="max-w-md mx-auto px-4 py-16">
+      <nav className="text-[11px] text-warm-gray mb-8 tracking-wide">
+        <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
+        <span className="mx-1.5">/</span>
+        <Link href="/seller/login" className="hover:text-charcoal transition-colors">Sellers</Link>
+        <span className="mx-1.5">/</span>
+        <span className="text-charcoal">Sign In</span>
+      </nav>
+
+      <h1 className="text-2xl font-light text-charcoal mb-8 text-center">Seller Sign In</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {error && (
+          <p className="text-red-600 text-[13px] text-center">{error}</p>
+        )}
+        <div>
+          <label htmlFor="email" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border border-black/15 rounded px-3 py-2.5 text-[14px] text-charcoal outline-none focus:border-charcoal transition-colors"
+            placeholder="you@example.com"
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border border-black/15 rounded px-3 py-2.5 text-[14px] text-charcoal outline-none focus:border-charcoal transition-colors"
+            placeholder="Enter your password"
+          />
+        </div>
+        <button type="submit" className="btn-cta w-full text-[12px]">
+          SIGN IN
+        </button>
+      </form>
+
+      <p className="text-center text-[13px] text-warm-gray mt-8">
+        New seller?{" "}
+        <Link href="/seller/register" className="text-charcoal underline hover:opacity-60 transition-opacity">
+          Register your store
+        </Link>
+      </p>
+    </div>
+  );
+}

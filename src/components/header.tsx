@@ -7,6 +7,7 @@ import { SearchIcon, UserIcon, CartIcon, MenuIcon, CloseIcon, HeartIcon } from "
 import { SearchModal } from "./search-modal";
 import { MegaMenuNav, MobileMegaMenuContent } from "./mega-menu";
 import { useAuth } from "./auth-provider";
+import { useSellerAuth } from "./seller-auth-provider";
 
 const secondaryLinks = [
   { label: "About", href: "/about", highlight: false },
@@ -23,6 +24,8 @@ export function Header({ onCartOpen, cartCount = 0, wishlistCount = 0 }: HeaderP
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { user } = useAuth();
+  const { seller } = useSellerAuth();
+  const sellerHref = seller ? "/seller/dashboard" : "/seller/login";
 
   return (
     <header className="bg-white sticky top-0 z-50 border-b border-black/5">
@@ -62,6 +65,12 @@ export function Header({ onCartOpen, cartCount = 0, wishlistCount = 0 }: HeaderP
               {link.label}
             </Link>
           ))}
+          <Link
+            href={sellerHref}
+            className="hidden lg:block text-[12px] text-charcoal hover:opacity-60 transition-opacity"
+          >
+            Sellers
+          </Link>
           <button
             aria-label="Search"
             className="p-1 hover:opacity-60 transition-opacity"
@@ -128,6 +137,13 @@ export function Header({ onCartOpen, cartCount = 0, wishlistCount = 0 }: HeaderP
               {link.label}
             </Link>
           ))}
+          <Link
+            href={sellerHref}
+            className="block text-sm py-2"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Sellers
+          </Link>
         </div>
       </div>
 
